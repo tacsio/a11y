@@ -1,68 +1,60 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  forwardRef,
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { UniqueIdService } from '../../services/unique-id/unique-id.service';
 
 @Component({
   selector: 'app-yes-no-button-group',
-  standalone: true,
-  imports: [],
   templateUrl: './yes-no-button-group.component.html',
-  styleUrl: './yes-no-button-group.component.css',
+  styleUrls: ['./yes-no-button-group.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: forwardRef(() => YesNoButtonGroupComponent),
-    },
-  ],
+      useExisting: forwardRef(() => YesNoButtonGroupComponent)
+    }
+  ]
 })
-export class YesNoButtonGroupComponent implements ControlValueAccessor {
-  @Input()
-  public value: string = null;
-
-  @Input()
-  public label: string = '';
-
-  @Output()
-  public valueChange = new EventEmitter<string>();
-
-  public options = YesNoButtonGroupOptions;
-
+export class YesNoButtonGroupComponent implements OnInit, ControlValueAccessor {
+  @Input() public value: string = null;
+  @Input() public label = '';
+  @Output() public valueChange = new EventEmitter<string>();
   public id: string = null;
+  public options = YesNoButtonGroupOptions;
   public onChange = (value: string) => {};
   public onTouched = () => {};
 
   constructor(uniqueIdService: UniqueIdService) {
-    this.id = uniqueIdService.generateIdWithPrefix('yes-no-button-groupd');
+    this.id = uniqueIdService.generateUniqueIdWithPrefix('yes-no-button-group');
   }
 
-  activate(value: string) {
-    this.writeValue(value);
+  ngOnInit(): void {
   }
 
-  writeValue(value: string): void {
+  public writeValue(value: string): void {
     this.value = value;
     this.onChange(this.value);
     this.valueChange.emit(this.value);
   }
-  registerOnChange(fn: (value: string) => void): void {
+
+  public registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
-  registerOnTouched(fn: () => void): void {
+
+  public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
-  setDisabledState?(isDisabled: boolean): void {
-    // throw new Error('Method not implemented.');
+
+  public setDisabledState?(isDisabled: boolean): void {
+    throw new Error("Method not implemented.");
+  }
+
+  public activate(value: string): void {
+    this.writeValue(value);
   }
 }
 
 enum YesNoButtonGroupOptions {
   YES = 'yes',
-  NO = 'no',
+  NO = 'no'
 }

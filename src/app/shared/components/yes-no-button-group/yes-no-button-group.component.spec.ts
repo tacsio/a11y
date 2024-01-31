@@ -8,10 +8,12 @@ describe('YesNoButtonGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [YesNoButtonGroupComponent]
+      declarations: [ YesNoButtonGroupComponent ]
     })
     .compileComponents();
-    
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(YesNoButtonGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
